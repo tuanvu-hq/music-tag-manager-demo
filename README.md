@@ -5,7 +5,7 @@
 
 **DISCLAIMER**: This is a demonstration only. Not all functionalities are enabled or available in this demo.
 
-- [MTM Demo](https://portfolio.tvhq.dev/music-tag-manager-demo)
+- [MTM Demo](https://music-tag-manager-demo.tvhq.dev)
 
 ## Table of content
 
