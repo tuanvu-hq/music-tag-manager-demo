@@ -230,10 +230,10 @@ export const useStorePlayer = defineStore("[Music Tag Manager V1] Player", () =>
     const shuffling = computed(() => stores.player.state.playback.shuffling);
 
     const i = index.value;
-    const { page, limit, current } = pagination.value.pagination;
+    const { page, limit } = pagination.value.pagination;
     const indexing = (page - 1) * limit;
 
-    if (i - 1 + indexing >= current + indexing - limit) {
+    if (i - 1 >= 0) {
       const video = playlist.value[i - 1] as VideoPublicDTO;
 
       stores.video.set.video(video);
@@ -241,7 +241,7 @@ export const useStorePlayer = defineStore("[Music Tag Manager V1] Player", () =>
       action.cueVideo(video);
     }
 
-    if (i - 1 + indexing < current + indexing - limit) {
+    if (i - 1 < 0) {
       const checkpoint = page - 1 > 0;
 
       if (checkpoint) {
