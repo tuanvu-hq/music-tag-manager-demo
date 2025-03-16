@@ -3,7 +3,7 @@
     <div class="space-y-4">
       <h2 class="text-lg font-bold">Theme</h2>
       <div class="flex gap-2">
-        <ButtonGeneral :key="button.name" v-for="button of buttons" :styling="[themeValue.bg.hover, 'w-30 border-2 hover:text-white', button.mode === mode ? 'border-blue-500' : 'border-transparent']" @click="button.callback">
+        <ButtonGeneral :key="button.name" v-for="button of buttons" :styling="[themeValue.bg.hover, 'w-30 border-2 hover:text-white', button.mode === mode ? themeValue.border.color : 'border-transparent']" @click="button.callback">
           <p>{{ button.name }}</p>
         </ButtonGeneral>
       </div>

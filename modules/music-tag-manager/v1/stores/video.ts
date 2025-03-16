@@ -15,7 +15,7 @@ export const useStoreVideo = defineStore("[Music Tag Manager V1] Video", () => {
 
   const set = {
     index: (payload: number) => (index.value = payload),
-    video: (payload: VideoPublicDTO) => (video.value = payload),
+    video: (payload: VideoPublicDTO | null) => (video.value = payload),
   };
 
   const action = {};

@@ -29,6 +29,10 @@ npm install
 npm run dev
 ```
 
+#### Issues
+
+If you encounter issues with `PGlite`, delete all contents of the `modules/music-tag-manager/v1/database/pglite` folder and restart the server.
+
 ### Intermediate Setup
 
 This method requires `Postgres` to be installed locally or running in a `Docker` image. Before installing and running the app, ensure you:

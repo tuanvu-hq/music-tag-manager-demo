@@ -52,6 +52,8 @@ export const useStorePlayer = defineStore("[Music Tag Manager V1] Player", () =>
     playVideo: () => actionPlayVideo(),
     resetTime: () => (time.value = { ...DEFAULT_TIME }),
     seekTo: (payload: number) => actionSeekTo(payload),
+    skipNext$: async () => await actionSkipNext$(),
+    skipPrevious$: async () => await actionSkipPrevious$(),
     toggleContinuing: () => (playback.value = { ...playback.value, continuing: !playback.value.continuing }),
     togglePlaying: () => actionTogglePlaying(),
     toggleRepeating: () => (playback.value = { ...playback.value, repeating: !playback.value.repeating }),
@@ -181,6 +183,82 @@ export const useStorePlayer = defineStore("[Music Tag Manager V1] Player", () =>
     if (!stores.video.state.video) return;
 
     player.value.seekTo(payload, true);
+  };
+
+  const actionSkipNext$ = async () => {
+    const playlist = computed(() => stores.list.state.lists.tab_controls_playlist);
+    const pagination = computed(() => stores.pagination.state.paginations.tab_controls_playlist);
+    const index = computed(() => stores.video.state.index);
+    const shuffling = computed(() => stores.player.state.playback.shuffling);
+
+    const i = index.value;
+    const { page, limit, current, total } = pagination.value.pagination;
+    const indexing = (page - 1) * limit;
+
+    if (i + 1 + indexing < current + indexing) {
+      const video = playlist.value[i + 1] as VideoPublicDTO;
+
+      stores.video.set.video(video);
+      stores.video.set.index(i + 1);
+      action.cueVideo(video);
+    }
+
+    if (i + 1 + indexing === current + indexing) {
+      const checkpoint = page * limit < total;
+
+      if (checkpoint) {
+        const { data, pagination } = await paginateVideosPlaylist$({ shuffling: shuffling.value, pagination: { page: page + 1 } });
+
+        stores.list.set.list({ listKey: "tab_controls_playlist", data });
+        stores.pagination.set.pagination({ paginationKey: "tab_controls_playlist", pagination });
+
+        stores.video.set.index(0);
+
+        const video = playlist.value[0] as VideoPublicDTO;
+
+        stores.video.set.video(video);
+        action.cueVideo(video);
+        stores.list.action.scrollTo({ scrollToKey: "tab_controls_playlist", index: 0 });
+      }
+    }
+  };
+
+  const actionSkipPrevious$ = async () => {
+    const playlist = computed(() => stores.list.state.lists.tab_controls_playlist);
+    const pagination = computed(() => stores.pagination.state.paginations.tab_controls_playlist);
+    const index = computed(() => stores.video.state.index);
+    const shuffling = computed(() => stores.player.state.playback.shuffling);
+
+    const i = index.value;
+    const { page, limit, current } = pagination.value.pagination;
+    const indexing = (page - 1) * limit;
+
+    if (i - 1 + indexing >= current + indexing - limit) {
+      const video = playlist.value[i - 1] as VideoPublicDTO;
+
+      stores.video.set.video(video);
+      stores.video.set.index(i - 1);
+      action.cueVideo(video);
+    }
+
+    if (i - 1 + indexing < current + indexing - limit) {
+      const checkpoint = page - 1 > 0;
+
+      if (checkpoint) {
+        const { data, pagination } = await paginateVideosPlaylist$({ shuffling: shuffling.value, pagination: { page: page - 1 } });
+
+        stores.list.set.list({ listKey: "tab_controls_playlist", data });
+        stores.pagination.set.pagination({ paginationKey: "tab_controls_playlist", pagination });
+
+        stores.video.set.index(indexing - 1);
+
+        const video = playlist.value[indexing - 1] as VideoPublicDTO;
+
+        stores.video.set.video(video);
+        action.cueVideo(video);
+        stores.list.action.scrollTo({ scrollToKey: "tab_controls_playlist", index: 0 });
+      }
+    }
   };
 
   const actionTogglePlaying = () => {

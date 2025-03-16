@@ -6,6 +6,7 @@ import { generatePlaylist$, paginateTags$, paginateVideosPlaylist$ } from "../ut
 import { getBrandedUUID } from "../utils/brand";
 import { useStorePagination } from "./pagination";
 import { useStorePlayer } from "./player";
+import { useStoreVideo } from "./video";
 
 type PropsSleep = { ms?: number };
 
@@ -27,6 +28,7 @@ export const useStoreList = defineStore("[Music Tag Manager V1] List", () => {
   const stores = {
     pagination: useStorePagination(),
     player: useStorePlayer(),
+    video: useStoreVideo(),
   };
 
   const lists = ref<Lists>({
@@ -103,8 +105,18 @@ export const useStoreList = defineStore("[Music Tag Manager V1] List", () => {
     const tags = [...lists.value.tab_detail_generate_playlist_selected_tags].map((tag) => getBrandedUUID({ uuid: tag.uuid }));
     const _exactMatch = exactMatch.value;
     const shuffling = stores.player.state.playback.shuffling;
+    const player = stores.player.state.player;
 
     stores.pagination.set.loading(true);
+
+    if (player) {
+      if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+        player.stopVideo();
+      }
+
+      stores.video.set.video(null);
+      stores.video.set.index(-1);
+    }
 
     await generatePlaylist$({ tags, exactMatch: _exactMatch });
 

@@ -1,6 +1,7 @@
 <template>
-  <div class="absolute inset-0 z-50 flex h-full w-full items-center justify-center duration-300" :class="[CONSTANTS_TW_DARK_MODE.bg[1], { 'pointer-events-none opacity-0': !loading, 'pointer-events-auto opacity-100': loading }]">
+  <div class="absolute inset-0 z-50 flex h-full w-full flex-col items-center justify-center gap-5 duration-300" :class="[CONSTANTS_TW_DARK_MODE.bg[1], { 'pointer-events-none opacity-0': !loading, 'pointer-events-auto opacity-100': loading }]">
     <p class="text-3xl font-bold">LOADING</p>
+    <p>( initial PGlite load might take a little while )</p>
   </div>
 </template>
 
