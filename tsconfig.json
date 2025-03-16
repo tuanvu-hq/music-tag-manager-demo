@@ -1,0 +1,12 @@
+{
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    // Music Tag Manager - YouTube API
+    "typeRoots": ["node_modules/@types"],
+    "types": ["youtube"],
+    // TypeORM - Decorators
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  }
+}

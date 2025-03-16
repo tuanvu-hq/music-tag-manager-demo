@@ -1,0 +1,46 @@
+@import url("@fontsource-variable/roboto-mono");
+@import url("@fontsource/poppins");
+@import "tailwindcss";
+
+:root {
+  --scrollbar-track: var(--color-neutral-50);
+  --scrollbar-thumb: var(--color-neutral-300);
+}
+
+html.dark {
+  --scrollbar-track: var(--color-neutral-950);
+  --scrollbar-thumb: var(--color-neutral-800);
+}
+
+html.scrollbar {
+  overflow-y: scroll;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+* {
+  --scrollbar-size: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+}
+
+.font-roboto-mono-variable {
+  font-family: "Roboto Mono Variable";
+}

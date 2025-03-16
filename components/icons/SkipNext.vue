@@ -1,0 +1,12 @@
+<template>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path
+      fill="currentColor"
+      d="M16.27 16.616V7.385h1v9.23zm-9.54 0V7.385L13.655 12z"
+    />
+  </svg>
+</template>
+
+<script lang="ts" setup></script>
+
+<style></style>
